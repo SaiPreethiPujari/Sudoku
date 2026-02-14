@@ -1,0 +1,606 @@
+/* --- 1. Global Styles and Reset --- */
+:root {
+    --primary-color: #3f51b5; /* Indigo */
+    --primary-dark: #303f9f;
+    --secondary-color: #ff9800; /* Orange */
+    --background-color: #f4f7f6; /* Light Grey/Blue */
+    --container-bg: #ffffff;
+    --text-color: #333;
+    --border-color: #ccc;
+    --error-color: #f44336; /* Red */
+    --success-color: #4caf50; /* Green */
+    --hover-bg: #e0e0e0;
+    --cell-bg-fixed: #eee;
+    --cell-bg-active: #fff9c4; /* Light yellow for selection */
+    --box-border-thickness: 3px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column; /* Changed to column to accommodate navbar */
+    justify-content: flex-start; /* Align content to the top */
+    align-items: center;
+    min-height: 100vh;
+    padding: 0; /* Removed padding from body, added to sections */
+}
+
+#app {
+    width: 100%;
+    max-width: 1000px;
+    background-color: var(--container-bg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 30px;
+    margin: 20px; /* Add margin to keep it off the edges */
+}
+
+/* --- 1.5. Navigation Bar Styles (UPDATED) --- */
+#navbar {
+    width: 100%;
+    background-color: var(--primary-color);
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    color: white;
+    font-size: 1.8em;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.nav-links a:hover {
+    background-color: var(--primary-dark);
+}
+
+/* --- 2. Page Transitions and Layout (Flexbox) --- */
+.page {
+    display: none;
+    padding: 20px 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.page.active {
+    display: block;
+    opacity: 1;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+h1, h2 {
+    color: var(--primary-dark);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+p.description {
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 1.1em;
+}
+
+/* --- 3. Buttons and Inputs --- */
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #f57c00; /* Darker orange */
+    transform: translateY(-2px);
+}
+
+.btn-action {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-action:hover {
+    background-color: #388e3c;
+    transform: translateY(-2px);
+}
+
+.btn-link {
+    background: none;
+    color: var(--primary-color);
+    padding: 5px;
+    margin-top: 20px;
+    font-size: 0.9em;
+    text-transform: none;
+}
+
+.input-field {
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+.home-actions, .game-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.difficulty-select {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- 4. Sudoku Grid Layout (CSS Grid) --- */
+.game-container {
+    max-width: 600px; /* Max width for the grid area */
+}
+
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.timer-display {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Ensures a perfect square */
+    border: var(--box-border-thickness) solid var(--text-color);
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Cell Styling */
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1em, 3vw, 1.8em);
+    border: 1px solid var(--border-color);
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    user-select: none;
+}
+
+/* Grid Box Borders (3x3) */
+.cell:nth-child(3n) {
+    border-right-width: var(--box-border-thickness);
+}
+
+.cell:nth-child(27n) {
+    border-bottom-width: var(--box-border-thickness);
+}
+
+/* Correct border reset for the last column/row */
+.cell:nth-child(9n) {
+    border-right-width: 1px;
+}
+.cell:nth-last-child(-n+9) {
+    border-bottom-width: 1px;
+}
+
+/* Specific 3x3 box borders based on row/column index */
+/* (Grid Indexing is easier for 9x9 layout) */
+.cell:nth-child(9n+1):nth-child(3n+1) ~ .cell:nth-child(9n+3),
+.cell:nth-child(9n+4):nth-child(3n+1) ~ .cell:nth-child(9n+6),
+.cell:nth-child(9n+7):nth-child(3n+1) ~ .cell:nth-child(9n+9) {
+    border-right-width: var(--box-border-thickness);
+}
+.cell:nth-child(9n+9) { border-right-width: 1px; }
+
+/* Thick horizontal borders for the 3x3 boxes */
+.cell:nth-child(n) {
+    /* Thick border for the 3rd, 6th, and 9th row */
+    border-bottom-width: 1px;
+}
+.cell:nth-child(n + 19):nth-child(-n + 27),
+.cell:nth-child(n + 46):nth-child(-n + 54) {
+    border-bottom-width: var(--box-border-thickness);
+}
+
+/* Fixed/Pre-filled Cell Style */
+.cell.fixed {
+    background-color: var(--cell-bg-fixed);
+    color: var(--text-color);
+    font-weight: 700;
+    cursor: default;
+}
+
+/* User Input Cell Style */
+.cell:not(.fixed) {
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+/* Highlight Styles */
+.cell.active-cell {
+    background-color: var(--cell-bg-active) !important;
+}
+
+.cell.highlight {
+    background-color: #e3f2fd; /* Light blue for row/col/box highlight */
+}
+
+.cell.error {
+    background-color: #ffcdd2; /* Light red for wrong input */
+    color: var(--error-color);
+}
+
+/* --- 5. How to Play Page --- */
+.rules-section {
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+    max-width: 600px;
+}
+
+.rules-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.rules-section li {
+    background-color: #f0f4ff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+.rule-title {
+    color: var(--primary-dark);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Example Grid for How to Play */
+.example-grid-container p {
+    margin-bottom: 10px;
+}
+
+.example-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    width: 270px; /* Small example grid */
+    height: 270px;
+    margin: 20px auto;
+    border: 3px solid #333;
+}
+
+.example-grid .cell {
+    border: 1px solid #999;
+    font-size: 1.2em;
+    width: 100%;
+    height: 100%;
+}
+
+.example-grid .fixed-example {
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.example-grid .highlight-box {
+    /* Style for the visual 3x3 rule illustration */
+    border: 2px solid var(--error-color) !important;
+    background-color: #ffe0b2; /* Light orange */
+}
+
+/* --- 6. Mobile Optimization (Media Queries) --- */
+@media (max-width: 768px) {
+    #app {
+        padding: 15px;
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    body {
+        padding: 0;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-links {
+        margin-top: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .home-actions, .game-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .difficulty-select, .difficulty-options {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .timer-display {
+        font-size: 1.2em;
+    }
+}
+
+/* Mobile Keypad (Bonus) */
+.mobile-keypad {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    width: 100%;
+    max-width: 450px;
+    margin: 20px auto 10px;
+}
+
+.mobile-keypad.hidden {
+    display: none;
+}
+
+.keypad-btn {
+    padding: 15px 0;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.keypad-btn:hover {
+    background-color: var(--hover-bg);
+}
+
+.clear-btn {
+    grid-column: span 5;
+    background-color: var(--error-color);
+    color: white;
+}
+.clear-btn:hover {
+    background-color: #c62828;
+}
+
+@media (min-width: 769px) {
+    /* Hide keypad on desktop */
+    .mobile-keypad {
+        display: none !important;
+    }
+}
+body.dark-theme {
+    --background-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --border-color: #444;
+    --cell-bg-fixed: #333;
+    --cell-bg-active: #3d5afe33; /* Soft indigo for dark mode selection */
+}
+
+#history-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.how-to-video {
+    width: 100%;
+    max-width: 700px;
+    margin: 25px auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+.home-image {
+    margin: 5px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.home-image img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+.description {
+    margin-bottom: 6px;
+}
+/* ===== GAME FRAME ===== */
+.game-frame {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 14px 35px rgba(0,0,0,0.15);
+    border: 2px solid #3f51b5;
+}
+#game-page .container {
+    display: flex;
+    justify-content: center;
+}
+/* ===== HOME FRAME – GRADIENT ===== */
+.home-frame {
+    background: linear-gradient(
+        135deg,
+        #3f51b5,
+        #cb79a2
+    );
+    color: #ffffff;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 14px 35px rgba(63,81,181,0.45);
+}
+.home-frame p,
+.home-frame h1 {
+    color: #ffffff;
+}
+/* --- Score and Hint Styles --- */
+.score-display {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: #f0f4ff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 2px solid var(--primary-color);
+}
+
+.hint-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 15px 0;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.hint-display {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.btn-hint {
+    background-color: #9c27b0;
+    color: white;
+}
+
+.btn-hint:hover {
+    background-color: #7b1fa2;
+    transform: translateY(-2px);
+}
+
+.btn-hint:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Add to game-controls for better layout */
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Mobile responsive for game controls */
+@media (max-width: 768px) {
+    .game-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .score-display, .hint-section {
+        width: 100%;
+    }
+    
+    .hint-section {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
+
+
+
+
+
+
+
+
+
+

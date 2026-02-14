@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World! Sudoku Puzzle Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="#" onclick="showPage('home-page')">Sudoku Pro</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home-page')">Home</a></li>
+                <li><a href="#" onclick="showPage('game-page')">Play</a></li>
+                <li><a href="#" onclick="showPage('how-to-play-page')">Rules</a></li>
+                <li><a href="#" onclick="showPage('settings-page')">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="app">
+
+        <section id="home-page" class="page active">
+            <div class="container">
+                <div class="home-frame">
+
+                    <header>
+                        <h1>Sudoku Puzzle Game</h1>
+                        <p class="description">Test your logic and problem-solving skills with a timeless classic.
+                            Select
+                            your difficulty and start solving!</p>
+                    </header>
+                    <div class="home-image">
+                        <img src="images/sudoku-illustration.png" alt="Sudoku Puzzle Illustration">
+                    </div>
+
+
+                    <div class="home-actions">
+                        <button class="btn btn-primary" onclick="showPage('game-page')">Start Game</button>
+                        <button class="btn btn-secondary" onclick="showPage('how-to-play-page')">How to Play</button>
+                        <div class="difficulty-select">
+                            <label for="home-difficulty">Default Difficulty:</label>
+                            <select id="home-difficulty" class="input-field">
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> <!-- home-frame -->
+            </div>
+        </section>
+
+
+        <section id="game-page" class="page">
+            <div class="container game-container">
+
+
+                <!-- Add inside the game-page section, after game-controls div -->
+                <div class="game-controls">
+                    <div class="timer-display">
+                        <span id="timer">00:00</span>
+                    </div>
+
+                    <div class="score-display">
+                        Score: <span id="score">1000</span>
+                    </div>
+
+                    <div class="difficulty-options">
+                        <label for="game-difficulty">Difficulty:</label>
+                        <select id="game-difficulty" class="input-field" onchange="newGame()">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hint-section">
+                    <div class="hint-display">
+                        Hints: <span id="hint-count">3</span>
+                    </div>
+                    <button class="btn btn-hint" onclick="useHint()" id="hint-btn">Use Hint (-50 points)</button>
+                </div>
+
+                <div id="sudoku-grid" class="sudoku-grid">
+                </div>
+
+                <div id="mobile-keypad" class="mobile-keypad hidden">
+                    <button class="keypad-btn clear-btn" data-value="0">Clear</button>
+                </div>
+
+                <div class="game-buttons">
+                    <button class="btn btn-action" onclick="checkSolution()">Check Solution</button>
+                    <button class="btn btn-primary" onclick="showFinalSolution()">Show Solution (-200 points)</button>
+                    <button class="btn btn-hint" onclick="useHint()">Get Hint</button>
+                    <button class="btn btn-secondary" onclick="resetGame()">Reset Game</button>
+                    <button class="btn btn-primary" onclick="newGame()">New Game</button>
+                </div>
+
+
+
+                <button class="btn btn-link back-btn" onclick="showPage('home-page')">← Back to Home</button>
+            </div>
+        </section>
+
+
+        <section id="how-to-play-page" class="page">
+            <div class="container">
+                <h2>How to Play Sudoku</h2>
+                <p>Sudoku is a logic-based number placement puzzle. The objective is to fill a 9×9 grid with digits so
+                    that each column, each row, and each of the nine 3×3 subgrids that compose the grid contain all of
+                    the digits from 1 to 9.</p>
+
+                <div class="rules-section">
+                    <h3>The Three Key Rules:</h3>
+                    <ul>
+                        <li><strong class="rule-title">Row Constraint:</strong> Every row must contain the numbers 1-9
+                            exactly once.</li>
+                        <li><strong class="rule-title">Column Constraint:</strong> Every column must contain the numbers
+                            1-9 exactly once.</li>
+                        <li><strong class="rule-title">Box Constraint:</strong> Every 3x3 block (highlighted by bold
+                            lines) must contain the numbers 1-9 exactly once.</li>
+                    </ul>
+                </div>
+                <h3>Watch How to Play</h3>
+                <video class="how-to-video" controls>
+                    <source src="how to play.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+
+                <h3>Learn Sudoku </h3>
+
+                <iframe src="https://www.sudoku.com/how-to-play/" width="100%" height="500" style="
+        border: 2px solid #3f51b5;
+        border-radius: 12px;
+        margin-top: 20px;
+    ">
+                </iframe>
+
+
+
+
+
+                <h3>Visual Example</h3>
+                <div class="example-grid-container">
+                    <p>In this example, the bold line indicates the 3x3 box rule. No number can repeat inside this box.
+                    </p>
+                    <div class="example-grid">
+                        <div class="cell fixed-example">5</div>
+                        <div class="cell fixed-example">3</div>
+                        <div class="cell highlight-box">4</div>
+                        <div class="cell highlight-box">4</div>
+                        <div class="cell">7</div>
+                        <div class="cell">8</div>
+                        <div class="cell">9</div>
+                        <div class="cell">1</div>
+                        <div class="cell">2</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="showPage('home-page')">Return to Home</button>
+            </div>
+        </section>
+        <section id="settings-page" class="page">
+            <div class="container">
+                <h2>Settings</h2>
+                <div class="settings-list" style="width:100%; max-width:400px; margin: 20px auto;">
+                    <div class="setting-item" onclick="showPage('stats-page')"
+                        style="display:flex; justify-content:space-between; padding:15px; border-bottom:1px solid var(--border-color); cursor:pointer;">
+                        <span>Statistics</span> <span>❯</span>
+                    </div>
+                    <div class="setting-item" onclick="toggleTheme()"
+                        style="display:flex; justify-content:space-between; padding:15px; border-bottom:1px solid var(--border-color); cursor:pointer;">
+                        <span>Toggle Theme</span> <span>❯</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="showPage('game-page')">Back to Game</button>
+            </div>
+        </section>
+        <section id="stats-page" class="page">
+            <div class="container">
+                <h2>Statistics</h2>
+                <p>Total Wins: <strong id="stats-won">0</strong></p>
+
+                <h3 style="margin-top:20px;">Recent History</h3>
+                <ul id="history-list"></ul>
+
+                <button class="btn btn-secondary" onclick="clearStats()">Clear History</button>
+                <button class="btn btn-primary" onclick="showPage('settings-page')">Back</button>
+            </div>
+        </section>
+
+
+
+
+    </div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
